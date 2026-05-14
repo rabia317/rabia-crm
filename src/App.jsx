@@ -220,7 +220,8 @@ export default function App() {
               {[
                 { label: "Sol PV", val: metrikler.solpv, renk: "#f59e0b" },
                 { label: "Sag PV", val: metrikler.sagpv, renk: "#a855f7" },
-                { label: "Ekibim", val: metrikler.ekip, renk: "#3b82f6" },
+                { label: "Distributör
+                  ", val: metrikler.ekip, renk: "#3b82f6" },
                 { label: "Sponsor", val: metrikler.sponsor, renk: "#10b981" },
               ].map((s, i) => (
                 <div key={i} className="card">
