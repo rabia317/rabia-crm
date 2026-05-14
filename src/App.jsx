@@ -15,15 +15,15 @@ const css = `
   .card { background: #16161f; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 16px; }
   .card-icon { font-size: 20px; margin-bottom: 8px; }
   .card-val { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; }
-  .card-label { font-size: 11px; color: #5a5a7a; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+  .card-label { font-size: 11px; color: #5a5a7a; }
   .section { padding: 0 16px 16px; }
   .section-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-  .add-btn { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); color: #f59e0b; border-radius: 8px; padding: 5px 12px; font-size: 11px; cursor: pointer; }
+  .add-btn { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); color: #f59e0b; border-radius: 8px; padding: 5px 12px; font-size: 11px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
   .aday { background: #16161f; border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
   .aday-av { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex-shrink: 0; }
   .aday-name { font-size: 14px; font-weight: 600; }
   .aday-note { font-size: 11px; color: #9090b0; margin-top: 2px; }
-  .durum { padding: 3px 9px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+  .durum { padding: 3px 9px; border-radius: 20px; font-size: 10px; font-weight: 700; }
   .sicak { background: rgba(245,158,11,0.15); color: #f59e0b; }
   .yesil { background: rgba(16,185,129,0.15); color: #10b981; }
   .takip { background: rgba(59,130,246,0.15); color: #3b82f6; }
@@ -42,7 +42,7 @@ const css = `
   .modal { background: #16161f; border-radius: 24px 24px 0 0; padding: 24px; width: 100%; max-width: 480px; }
   .modal-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 20px; }
   .inp { width: 100%; background: #0a0a0f; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 14px; color: #f0f0f8; font-size: 14px; margin-bottom: 12px; outline: none; font-family: 'DM Sans', sans-serif; }
-  .sel { width: 100%; background: #0a0a0f; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 14px; color: #f0f0f8; font-size: 14px; margin-bottom: 16px; outline: none; }
+  .sel { width: 100%; background: #0a0a0f; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 14px; color: #f0f0f8; font-size: 14px; margin-bottom: 16px; outline: none; font-family: 'DM Sans', sans-serif; }
   .sel option { background: #16161f; }
   .save-btn { width: 100%; background: linear-gradient(135deg, #a855f7, #7c3aed); border: none; border-radius: 12px; padding: 14px; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Syne', sans-serif; }
   .progress-bg { background: #1e1e2a; border-radius: 999px; height: 8px; margin: 8px 0; overflow: hidden; }
@@ -51,7 +51,7 @@ const css = `
   .login-card { background: #16161f; border: 1px solid rgba(255,255,255,0.07); border-radius: 24px; padding: 40px 28px; width: 340px; }
   .login-logo { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; background: linear-gradient(135deg, #f59e0b, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: 6px; }
   .login-sub { color: #5a5a7a; font-size: 12px; text-align: center; margin-bottom: 28px; }
-  .login-label { font-size: 11px; color: #5a5a7a; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 6px; }
+  .login-label { font-size: 11px; color: #5a5a7a; display: block; margin-bottom: 6px; }
   .login-btn { width: 100%; background: linear-gradient(135deg, #a855f7, #7c3aed); border: none; border-radius: 12px; padding: 14px; color: #fff; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 4px; }
   .err { color: #ef4444; font-size: 12px; text-align: center; margin-top: 10px; }
   .empty { text-align: center; color: #5a5a7a; padding: 40px 0; font-size: 14px; }
@@ -70,10 +70,10 @@ export default function App() {
   const [metrikler, setMetrikler] = useState({ basvuru: 0, video: 0, funnel: 0, zoom: 0, distributor: 0, xp: 0, gelir: 0, hedef: 0 });
   const [tasks, setTasks] = useState([
     { id: 1, ad: "Sabah Rutini", saat: "08:00-08:30", ikon: "⏰", done: false },
-    { id: 2, ad: "Mesajları Yanıtla", saat: "09:00-10:00", ikon: "💬", done: false },
-    { id: 3, ad: "Zoom Toplantısı", saat: "11:00-12:30", ikon: "📹", done: false },
+    { id: 2, ad: "Mesajlari Yanitla", saat: "09:00-10:00", ikon: "💬", done: false },
+    { id: 3, ad: "Zoom Toplantisi", saat: "11:00-12:30", ikon: "📹", done: false },
     { id: 4, ad: "Aday Takibi", saat: "14:00-15:00", ikon: "👥", done: false },
-    { id: 5, ad: "İçerik Üretimi", saat: "16:00-17:00", ikon: "✨", done: false },
+    { id: 5, ad: "Icerik Uretimi", saat: "16:00-17:00", ikon: "✨", done: false },
   ]);
   const [modal, setModal] = useState(null);
   const [yeni, setYeni] = useState({ ad: "", tel: "", durum: "yeni", not: "" });
@@ -84,7 +84,7 @@ export default function App() {
   const giris = () => {
     const u = USERS[login.id];
     if (u && u.sifre === login.sifre) { setKullanici(u); setErr(""); }
-    else setErr("Kullanıcı adı veya şifre hatalı.");
+    else setErr("Kullanici adi veya sifre hatali.");
   };
 
   const adayEkle = () => {
@@ -110,13 +110,13 @@ export default function App() {
         <div className="login-card">
           <div className="login-logo">NetWork Pro</div>
           <div className="login-sub">Network Marketing Takip</div>
-          <label className="login-label">Kullanıcı Adı</label>
+          <label className="login-label">Kullanici Adi</label>
           <input className="inp" placeholder="rabia" value={login.id} onChange={e => setLogin(l => ({ ...l, id: e.target.value }))} onKeyDown={e => e.key === "Enter" && giris()} />
-          <label className="login-label">Şifre</label>
+          <label className="login-label">Sifre</label>
           <input className="inp" type="password" placeholder="••••" value={login.sifre} onChange={e => setLogin(l => ({ ...l, sifre: e.target.value }))} onKeyDown={e => e.key === "Enter" && giris()} />
-          <button className="login-btn" onClick={giris}>Giriş Yap</button>
+          <button className="login-btn" onClick={giris}>Giris Yap</button>
           {err && <div className="err">{err}</div>}
-          <div style={{ marginTop: 20, textAlign: "center", fontSize: 11, color: "#5a5a7a" }}>Kullanıcı: rabia / Şifre: 1234</div>
+          <div style={{ marginTop: 20, textAlign: "center", fontSize: 11, color: "#5a5a7a" }}>Kullanici: rabia / Sifre: 1234</div>
         </div>
       </div>
     </>
@@ -135,16 +135,16 @@ export default function App() {
           <>
             <div className="greeting">
               <h2>Merhaba, {kullanici.ad}! 👋</h2>
-              <p>Bugünün verilerini gir ve takip et 📊</p>
+              <p>Bugunun verilerini gir ve takip et 📊</p>
             </div>
             <div className="metrics">
               {[
-                { label: "Başvurular", val: metrikler.basvuru, ikon: "👥", renk: "#f59e0b" },
-                { label: "Video İzlenme", val: metrikler.video, ikon: "▶️", renk: "#a855f7" },
+                { label: "Basvurular", val: metrikler.basvuru, ikon: "👥", renk: "#f59e0b" },
+                { label: "Video Izlenme", val: metrikler.video, ikon: "▶️", renk: "#a855f7" },
                 { label: "Funnel %", val: metrikler.funnel + "%", ikon: "🔽", renk: "#f59e0b" },
                 { label: "Zoom", val: metrikler.zoom, ikon: "📹", renk: "#3b82f6" },
-                { label: "Distribütör", val: metrikler.distributor, ikon: "🏆", renk: "#10b981" },
-                { label: "XP Puanı", val: metrikler.xp + " XP", ikon: "⚡", renk: "#f59e0b" },
+                { label: "Distributor", val: metrikler.distributor, ikon: "🏆", renk: "#10b981" },
+                { label: "XP Puani", val: metrikler.xp + " XP", ikon: "⚡", renk: "#f59e0b" },
               ].map((m, i) => (
                 <div key={i} className="card">
                   <div className="card-icon">{m.ikon}</div>
@@ -155,8 +155,8 @@ export default function App() {
             </div>
             <div className="section">
               <div className="section-title">
-                Aylık Hedef
-                <button className="add-btn" onClick={() => { setMetForm({ ...metrikler }); setModal("metrik"); }}>Güncelle</button>
+                Aylik Hedef
+                <button className="add-btn" onClick={() => { setMetForm({ ...metrikler }); setModal("metrik"); }}>Guncelle</button>
               </div>
               <div className="card">
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
@@ -176,7 +176,7 @@ export default function App() {
               Adaylar ({adaylar.length})
               <button className="add-btn" onClick={() => setModal("aday")}>+ Ekle</button>
             </div>
-            {adaylar.length === 0 && <div className="empty">Henüz aday yok.<br />+ Ekle butonuna bas!</div>}
+            {adaylar.length === 0 && <div className="empty">Henuz aday yok. + Ekle butonuna bas!</div>}
             {adaylar.map(a => (
               <div key={a.id} className="aday">
                 <div className="aday-av" style={{ background: durumRenk[a.durum], color: durumColor[a.durum] }}>
@@ -196,7 +196,7 @@ export default function App() {
         {sayfa === "program" && (
           <div className="section" style={{ paddingTop: 20 }}>
             <div className="section-title">
-              Günlük Program
+              Gunluk Program
               <span style={{ fontSize: 12, color: "#5a5a7a", fontWeight: 400 }}>{tasks.filter(t => t.done).length}/{tasks.length}</span>
             </div>
             {tasks.map(t => (
@@ -217,9 +217,9 @@ export default function App() {
             <div className="card" style={{ textAlign: "center", padding: 28, marginBottom: 14 }}>
               <div style={{ width: 64, height: 64, borderRadius: 18, background: "linear-gradient(135deg, #f59e0b, #a855f7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, fontWeight: 800, color: "#000", margin: "0 auto 12px" }}>{kullanici.ad[0]}</div>
               <div style={{ fontFamily: "Syne,sans-serif", fontSize: 20, fontWeight: 700 }}>{kullanici.ad}</div>
-              <div style={{ color: "#5a5a7a", fontSize: 12, marginTop: 4 }}>{kullanici.rol === "admin" ? "👑 Yönetici" : "Bayi"}</div>
+              <div style={{ color: "#5a5a7a", fontSize: 12, marginTop: 4 }}>{kullanici.rol === "admin" ? "👑 Yonetici" : "Bayi"}</div>
             </div>
-            <button className="save-btn" onClick={() => setKullanici(null)}>Çıkış Yap</button>
+            <button className="save-btn" onClick={() => setKullanici(null)}>Cikis Yap</button>
           </div>
         )}
 
@@ -245,10 +245,10 @@ export default function App() {
             <input className="inp" placeholder="Ad Soyad" value={yeni.ad} onChange={e => setYeni(v => ({ ...v, ad: e.target.value }))} />
             <input className="inp" placeholder="Telefon" value={yeni.tel} onChange={e => setYeni(v => ({ ...v, tel: e.target.value }))} />
             <select className="sel" value={yeni.durum} onChange={e => setYeni(v => ({ ...v, durum: e.target.value }))}>
-              <option value="yeni">🆕 Yeni</option>
-              <option value="sicak">🔥 Sıcak</option>
-              <option value="yesil">✅ Yeşil</option>
-              <option value="takip">📌 Takip</option>
+              <option value="yeni">Yeni</option>
+              <option value="sicak">Sicak</option>
+              <option value="yesil">Yesil</option>
+              <option value="takip">Takip</option>
             </select>
             <input className="inp" placeholder="Not..." value={yeni.not} onChange={e => setYeni(v => ({ ...v, not: e.target.value }))} />
             <button className="save-btn" onClick={adayEkle}>Ekle</button>
@@ -259,8 +259,8 @@ export default function App() {
       {modal === "metrik" && (
         <div className="modal-bg" onClick={e => e.target.className === "modal-bg" && setModal(null)}>
           <div className="modal">
-            <div className="modal-title">📊 Metrikleri Güncelle</div>
-            {[["basvuru","Başvuru Sayısı"],["video","Video İzlenme"],["funnel","Funnel (%)"],["zoom","Zoom Toplantısı"],["distributor","Yeni Distribütör"],["xp","XP Puanı"],["gelir","Aylık Gelir (₺)"],["hedef","Aylık Hedef (₺)"]].map(([k, l]) => (
+            <div className="modal-title">Metrikleri Guncelle</div>
+            {[["basvuru","Basvuru Sayisi"],["video","Video Izlenme"],["funnel","Funnel (%)"],["zoom","Zoom Toplantisi"],["distributor","Yeni Distributor"],["xp","XP Puani"],["gelir","Aylik Gelir (TL)"],["hedef","Aylik Hedef (TL)"]].map(([k, l]) => (
               <input key={k} className="inp" type="number" placeholder={l} defaultValue={metrikler[k] || ""}
                 onChange={e => setMetForm(f => ({ ...f, [k]: e.target.value }))} />
             ))}
