@@ -290,8 +290,10 @@ export default function App() {
             <select className="sel" defaultValue={metrikler.kariyer}
               onChange={e => setMetForm(f => ({ ...f, kariyer: e.target.value }))}>
               <option>Executive</option>
-              <option>Jade</option>
-              <option>Ruby</option>
+              <option>Jade</option><option>Pearl</option>
+<option>Sapphire</option>
+<option>Elite</option>
+              <option>Ruby</option><option>Double Diamond</option>
               <option>Emerald</option>
               <option>Diamond</option>
             </select>
