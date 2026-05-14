@@ -56,7 +56,7 @@ const css = `
   .login-btn { width: 100%; background: linear-gradient(135deg, #a855f7, #7c3aed); border: none; border-radius: 12px; padding: 14px; color: #fff; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 4px; }
   .err { color: #ef4444; font-size: 12px; text-align: center; margin-top: 10px; }
   .empty { text-align: center; color: #5a5a7a; padding: 40px 0; font-size: 14px; }
-  .kariyer-badge { display: inline-block; background: linear-gradient(135deg, #f59e0b, #a855f7); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 700; color: #000; margin-top: 8px; }
+  .badge { display: inline-block; background: linear-gradient(135deg, #f59e0b, #a855f7); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 700; color: #000; }
 `;
 
 const USERS = {
@@ -65,13 +65,25 @@ const USERS = {
   bayi2: { id: "bayi2", ad: "Ayse", sifre: "1234", rol: "bayi" },
 };
 
+const KARIYERLER = [
+  "Executive (100 CV)",
+  "Jade (1.000 CV)",
+  "Pearl (2.500 CV)",
+  "Sapphire (5.000 CV)",
+  "Elite (10.000 CV)",
+  "Ruby (25.000 CV)",
+  "Emerald (50.000 CV)",
+  "Diamond (100.000 CV)",
+  "Double Diamond (250.000 CV)",
+];
+
 export default function App() {
   const [kullanici, setKullanici] = useState(null);
   const [sayfa, setSayfa] = useState("ana");
   const [adaylar, setAdaylar] = useState([]);
   const [metrikler, setMetrikler] = useState({
     solpv: 0, sagpv: 0, toplamkazanc: 0, haftalikkazanc: 0,
-    ekip: 0, sponsor: 0, basvuru: 0, kariyer: "Executive"
+    distributor: 0, sponsor: 0, basvuru: 0, kariyer: KARIYERLER[0]
   });
   const [tasks, setTasks] = useState([
     { id: 1, ad: "Sabah Rutini", saat: "08:00-08:30", ikon: "⏰", done: false },
@@ -139,15 +151,15 @@ export default function App() {
           <>
             <div className="greeting">
               <h2>Merhaba, {kullanici.ad}! 👋</h2>
-              <p>Kariyerin: <span className="kariyer-badge">{metrikler.kariyer}</span></p>
+              <p>Seviye: <span className="badge">{metrikler.kariyer}</span></p>
             </div>
             <div className="metrics">
               {[
                 { label: "Sol PV", val: metrikler.solpv, ikon: "⬅️", renk: "#f59e0b" },
                 { label: "Sag PV", val: metrikler.sagpv, ikon: "➡️", renk: "#a855f7" },
-                { label: "Haftalik Kazanc", val: metrikler.haftalikkazanc + " TL", ikon: "💰", renk: "#10b981" },
-                { label: "Toplam Kazanc", val: metrikler.toplamkazanc + " TL", ikon: "🏆", renk: "#f59e0b" },
-                { label: "Distributör", val: metrikler.ekip, ikon: "👥", renk: "#3b82f6" },
+                { label: "Haftalik Kazanc TL", val: metrikler.haftalikkazanc, ikon: "💰", renk: "#10b981" },
+                { label: "Toplam Kazanc TL", val: metrikler.toplamkazanc, ikon: "🏆", renk: "#f59e0b" },
+                { label: "Distributor", val: metrikler.distributor, ikon: "👥", renk: "#3b82f6" },
                 { label: "Sponsor", val: metrikler.sponsor, ikon: "🌟", renk: "#a855f7" },
                 { label: "Basvuru", val: metrikler.basvuru, ikon: "📋", renk: "#10b981" },
               ].map((m, i) => (
@@ -157,7 +169,7 @@ export default function App() {
                   <div className="card-label">{m.label}</div>
                 </div>
               ))}
-              <div className="card" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+              <div className="card" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <button className="add-btn" style={{ width: "100%" }} onClick={() => { setMetForm({ ...metrikler }); setModal("metrik"); }}>
                   Guncelle
                 </button>
@@ -213,15 +225,14 @@ export default function App() {
             <div className="card" style={{ textAlign: "center", padding: 28, marginBottom: 14 }}>
               <div style={{ width: 64, height: 64, borderRadius: 18, background: "linear-gradient(135deg, #f59e0b, #a855f7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, fontWeight: 800, color: "#000", margin: "0 auto 12px" }}>{kullanici.ad[0]}</div>
               <div style={{ fontFamily: "Syne,sans-serif", fontSize: 20, fontWeight: 700 }}>{kullanici.ad}</div>
-              <div style={{ color: "#5a5a7a", fontSize: 12, marginTop: 4 }}>{kullanici.rol === "admin" ? "👑 Yonetici" : "Bayi"}</div>
-              <div className="kariyer-badge" style={{ marginTop: 12 }}>{metrikler.kariyer}</div>
+              <div style={{ color: "#5a5a7a", fontSize: 12, marginTop: 4 }}>{kullanici.rol === "admin" ? "Yonetici" : "Bayi"}</div>
+              <div className="badge" style={{ marginTop: 12 }}>{metrikler.kariyer}</div>
             </div>
             <div className="metrics" style={{ padding: 0, marginBottom: 14 }}>
               {[
                 { label: "Sol PV", val: metrikler.solpv, renk: "#f59e0b" },
                 { label: "Sag PV", val: metrikler.sagpv, renk: "#a855f7" },
-                { label: "Distributör
-                  ", val: metrikler.ekip, renk: "#3b82f6" },
+                { label: "Distributor", val: metrikler.distributor, renk: "#3b82f6" },
                 { label: "Sponsor", val: metrikler.sponsor, renk: "#10b981" },
               ].map((s, i) => (
                 <div key={i} className="card">
@@ -276,7 +287,7 @@ export default function App() {
               ["sagpv","Sag PV"],
               ["haftalikkazanc","Haftalik Kazanc (TL)"],
               ["toplamkazanc","Toplam Kazanc (TL)"],
-              ["ekip","Ekip Sayisi"],
+              ["distributor","Distributor Sayisi"],
               ["sponsor","Sponsor Sayisi"],
               ["basvuru","Basvuru Sayisi"],
             ].map(([k, l]) => (
@@ -289,13 +300,7 @@ export default function App() {
             <label className="inp-label">Kariyer Seviyesi</label>
             <select className="sel" defaultValue={metrikler.kariyer}
               onChange={e => setMetForm(f => ({ ...f, kariyer: e.target.value }))}>
-              <option>Executive</option>
-              <option>Jade</option><option>Pearl</option>
-<option>Sapphire</option>
-<option>Elite</option>
-              <option>Ruby</option><option>Double Diamond</option>
-              <option>Emerald</option>
-              <option>Diamond</option>
+              {KARIYERLER.map(k => <option key={k} value={k}>{k}</option>)}
             </select>
             <button className="save-btn" onClick={metrikKaydet}>Kaydet</button>
           </div>
