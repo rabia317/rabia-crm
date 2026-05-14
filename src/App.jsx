@@ -14,8 +14,8 @@ const css = `
   .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 16px; }
   .card { background: #16161f; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 16px; }
   .card-icon { font-size: 20px; margin-bottom: 8px; }
-  .card-val { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; }
-  .card-label { font-size: 11px; color: #5a5a7a; }
+  .card-val { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; }
+  .card-label { font-size: 11px; color: #5a5a7a; margin-top: 2px; }
   .section { padding: 0 16px 16px; }
   .section-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
   .add-btn { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); color: #f59e0b; border-radius: 8px; padding: 5px 12px; font-size: 11px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
@@ -39,9 +39,10 @@ const css = `
   .nav-item.active { color: #f59e0b; }
   .nav-icon { font-size: 22px; }
   .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: flex-end; justify-content: center; z-index: 200; }
-  .modal { background: #16161f; border-radius: 24px 24px 0 0; padding: 24px; width: 100%; max-width: 480px; }
+  .modal { background: #16161f; border-radius: 24px 24px 0 0; padding: 24px; width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto; }
   .modal-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 20px; }
   .inp { width: 100%; background: #0a0a0f; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 14px; color: #f0f0f8; font-size: 14px; margin-bottom: 12px; outline: none; font-family: 'DM Sans', sans-serif; }
+  .inp-label { font-size: 11px; color: #5a5a7a; margin-bottom: 4px; display: block; }
   .sel { width: 100%; background: #0a0a0f; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 14px; color: #f0f0f8; font-size: 14px; margin-bottom: 16px; outline: none; font-family: 'DM Sans', sans-serif; }
   .sel option { background: #16161f; }
   .save-btn { width: 100%; background: linear-gradient(135deg, #a855f7, #7c3aed); border: none; border-radius: 12px; padding: 14px; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Syne', sans-serif; }
@@ -55,6 +56,7 @@ const css = `
   .login-btn { width: 100%; background: linear-gradient(135deg, #a855f7, #7c3aed); border: none; border-radius: 12px; padding: 14px; color: #fff; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 4px; }
   .err { color: #ef4444; font-size: 12px; text-align: center; margin-top: 10px; }
   .empty { text-align: center; color: #5a5a7a; padding: 40px 0; font-size: 14px; }
+  .kariyer-badge { display: inline-block; background: linear-gradient(135deg, #f59e0b, #a855f7); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 700; color: #000; margin-top: 8px; }
 `;
 
 const USERS = {
@@ -67,10 +69,13 @@ export default function App() {
   const [kullanici, setKullanici] = useState(null);
   const [sayfa, setSayfa] = useState("ana");
   const [adaylar, setAdaylar] = useState([]);
-  const [metrikler, setMetrikler] = useState({ basvuru: 0, video: 0, funnel: 0, zoom: 0, distributor: 0, xp: 0, gelir: 0, hedef: 0 });
+  const [metrikler, setMetrikler] = useState({
+    solpv: 0, sagpv: 0, toplamkazanc: 0, haftalikkazanc: 0,
+    ekip: 0, sponsor: 0, basvuru: 0, kariyer: "Executive"
+  });
   const [tasks, setTasks] = useState([
     { id: 1, ad: "Sabah Rutini", saat: "08:00-08:30", ikon: "⏰", done: false },
-    { id: 2, ad: "Mesajlari Yanitla", saat: "09:00-10:00", ikon: "💬", done: false },
+    { id: 2, ad: "Mesaj Yanitla", saat: "09:00-10:00", ikon: "💬", done: false },
     { id: 3, ad: "Zoom Toplantisi", saat: "11:00-12:30", ikon: "📹", done: false },
     { id: 4, ad: "Aday Takibi", saat: "14:00-15:00", ikon: "👥", done: false },
     { id: 5, ad: "Icerik Uretimi", saat: "16:00-17:00", ikon: "✨", done: false },
@@ -95,11 +100,10 @@ export default function App() {
   };
 
   const metrikKaydet = () => {
-    setMetrikler(m => ({ ...m, ...Object.fromEntries(Object.entries(metForm).map(([k, v]) => [k, Number(v) || 0])) }));
+    setMetrikler(m => ({ ...m, ...metForm }));
     setModal(null);
   };
 
-  const hedefPct = metrikler.hedef > 0 ? Math.min(100, Math.round((metrikler.gelir / metrikler.hedef) * 100)) : 0;
   const durumRenk = { sicak: "#f59e0b25", yesil: "#10b98125", takip: "#3b82f625", yeni: "#a855f725" };
   const durumColor = { sicak: "#f59e0b", yesil: "#10b981", takip: "#3b82f6", yeni: "#a855f7" };
 
@@ -108,8 +112,8 @@ export default function App() {
       <style>{css}</style>
       <div className="login-wrap">
         <div className="login-card">
-          <div className="login-logo">NetWork Pro</div>
-          <div className="login-sub">Network Marketing Takip</div>
+          <div className="login-logo">OXO Takip</div>
+          <div className="login-sub">Network Marketing Sistemi</div>
           <label className="login-label">Kullanici Adi</label>
           <input className="inp" placeholder="rabia" value={login.id} onChange={e => setLogin(l => ({ ...l, id: e.target.value }))} onKeyDown={e => e.key === "Enter" && giris()} />
           <label className="login-label">Sifre</label>
@@ -127,7 +131,7 @@ export default function App() {
       <style>{css}</style>
       <div className="app">
         <div className="topbar">
-          <div className="logo">NetWork Pro</div>
+          <div className="logo">OXO Takip</div>
           <div className="avatar" onClick={() => setKullanici(null)}>{kullanici.ad[0]}</div>
         </div>
 
@@ -135,16 +139,17 @@ export default function App() {
           <>
             <div className="greeting">
               <h2>Merhaba, {kullanici.ad}! 👋</h2>
-              <p>Bugunun verilerini gir ve takip et 📊</p>
+              <p>Kariyerin: <span className="kariyer-badge">{metrikler.kariyer}</span></p>
             </div>
             <div className="metrics">
               {[
-                { label: "Basvurular", val: metrikler.basvuru, ikon: "👥", renk: "#f59e0b" },
-                { label: "Video Izlenme", val: metrikler.video, ikon: "▶️", renk: "#a855f7" },
-                { label: "Funnel %", val: metrikler.funnel + "%", ikon: "🔽", renk: "#f59e0b" },
-                { label: "Zoom", val: metrikler.zoom, ikon: "📹", renk: "#3b82f6" },
-                { label: "Distributor", val: metrikler.distributor, ikon: "🏆", renk: "#10b981" },
-                { label: "XP Puani", val: metrikler.xp + " XP", ikon: "⚡", renk: "#f59e0b" },
+                { label: "Sol PV", val: metrikler.solpv, ikon: "⬅️", renk: "#f59e0b" },
+                { label: "Sag PV", val: metrikler.sagpv, ikon: "➡️", renk: "#a855f7" },
+                { label: "Haftalik Kazanc", val: metrikler.haftalikkazanc + " TL", ikon: "💰", renk: "#10b981" },
+                { label: "Toplam Kazanc", val: metrikler.toplamkazanc + " TL", ikon: "🏆", renk: "#f59e0b" },
+                { label: "Distributör", val: metrikler.ekip, ikon: "👥", renk: "#3b82f6" },
+                { label: "Sponsor", val: metrikler.sponsor, ikon: "🌟", renk: "#a855f7" },
+                { label: "Basvuru", val: metrikler.basvuru, ikon: "📋", renk: "#10b981" },
               ].map((m, i) => (
                 <div key={i} className="card">
                   <div className="card-icon">{m.ikon}</div>
@@ -152,19 +157,10 @@ export default function App() {
                   <div className="card-label">{m.label}</div>
                 </div>
               ))}
-            </div>
-            <div className="section">
-              <div className="section-title">
-                Aylik Hedef
-                <button className="add-btn" onClick={() => { setMetForm({ ...metrikler }); setModal("metrik"); }}>Guncelle</button>
-              </div>
-              <div className="card">
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-                  <span style={{ fontSize: 13 }}>₺{metrikler.gelir.toLocaleString("tr-TR")}</span>
-                  <span style={{ color: "#f59e0b", fontWeight: 700 }}>%{hedefPct}</span>
-                </div>
-                <div className="progress-bg"><div className="progress-fill" style={{ width: hedefPct + "%" }} /></div>
-                <div style={{ fontSize: 11, color: "#5a5a7a", marginTop: 6 }}>Hedef: ₺{metrikler.hedef.toLocaleString("tr-TR")}</div>
+              <div className="card" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                <button className="add-btn" style={{ width: "100%" }} onClick={() => { setMetForm({ ...metrikler }); setModal("metrik"); }}>
+                  Guncelle
+                </button>
               </div>
             </div>
           </>
@@ -218,6 +214,20 @@ export default function App() {
               <div style={{ width: 64, height: 64, borderRadius: 18, background: "linear-gradient(135deg, #f59e0b, #a855f7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, fontWeight: 800, color: "#000", margin: "0 auto 12px" }}>{kullanici.ad[0]}</div>
               <div style={{ fontFamily: "Syne,sans-serif", fontSize: 20, fontWeight: 700 }}>{kullanici.ad}</div>
               <div style={{ color: "#5a5a7a", fontSize: 12, marginTop: 4 }}>{kullanici.rol === "admin" ? "👑 Yonetici" : "Bayi"}</div>
+              <div className="kariyer-badge" style={{ marginTop: 12 }}>{metrikler.kariyer}</div>
+            </div>
+            <div className="metrics" style={{ padding: 0, marginBottom: 14 }}>
+              {[
+                { label: "Sol PV", val: metrikler.solpv, renk: "#f59e0b" },
+                { label: "Sag PV", val: metrikler.sagpv, renk: "#a855f7" },
+                { label: "Ekibim", val: metrikler.ekip, renk: "#3b82f6" },
+                { label: "Sponsor", val: metrikler.sponsor, renk: "#10b981" },
+              ].map((s, i) => (
+                <div key={i} className="card">
+                  <div className="card-val" style={{ color: s.renk }}>{s.val}</div>
+                  <div className="card-label">{s.label}</div>
+                </div>
+              ))}
             </div>
             <button className="save-btn" onClick={() => setKullanici(null)}>Cikis Yap</button>
           </div>
@@ -259,11 +269,31 @@ export default function App() {
       {modal === "metrik" && (
         <div className="modal-bg" onClick={e => e.target.className === "modal-bg" && setModal(null)}>
           <div className="modal">
-            <div className="modal-title">Metrikleri Guncelle</div>
-            {[["basvuru","Basvuru Sayisi"],["video","Video Izlenme"],["funnel","Funnel (%)"],["zoom","Zoom Toplantisi"],["distributor","Yeni Distributor"],["xp","XP Puani"],["gelir","Aylik Gelir (TL)"],["hedef","Aylik Hedef (TL)"]].map(([k, l]) => (
-              <input key={k} className="inp" type="number" placeholder={l} defaultValue={metrikler[k] || ""}
-                onChange={e => setMetForm(f => ({ ...f, [k]: e.target.value }))} />
+            <div className="modal-title">Verileri Guncelle</div>
+            {[
+              ["solpv","Sol PV"],
+              ["sagpv","Sag PV"],
+              ["haftalikkazanc","Haftalik Kazanc (TL)"],
+              ["toplamkazanc","Toplam Kazanc (TL)"],
+              ["ekip","Ekip Sayisi"],
+              ["sponsor","Sponsor Sayisi"],
+              ["basvuru","Basvuru Sayisi"],
+            ].map(([k, l]) => (
+              <div key={k}>
+                <label className="inp-label">{l}</label>
+                <input className="inp" type="number" placeholder="0" defaultValue={metrikler[k] || ""}
+                  onChange={e => setMetForm(f => ({ ...f, [k]: Number(e.target.value) }))} />
+              </div>
             ))}
+            <label className="inp-label">Kariyer Seviyesi</label>
+            <select className="sel" defaultValue={metrikler.kariyer}
+              onChange={e => setMetForm(f => ({ ...f, kariyer: e.target.value }))}>
+              <option>Executive</option>
+              <option>Jade</option>
+              <option>Ruby</option>
+              <option>Emerald</option>
+              <option>Diamond</option>
+            </select>
             <button className="save-btn" onClick={metrikKaydet}>Kaydet</button>
           </div>
         </div>
